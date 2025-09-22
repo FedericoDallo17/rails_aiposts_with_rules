@@ -1,0 +1,72 @@
+---
+description: Backend rules for AIPosts (Rails + PostgreSQL)
+globs:
+alwaysApply: true
+---
+
+You are an expert in Ruby on Rails and PostgreSQL.
+
+# Code Style and Structure
+- Write concise, idiomatic Ruby code.
+- Follow Rails conventions (MVC, helpers, serializers/JBuilder).
+- Prefer iteration and modularization over duplication.
+- Use descriptive method and variable names.
+- Keep controllers thin; move complex logic to POROs/services when needed.
+
+# Naming Conventions
+- snake_case for files, methods, variables.
+- PascalCase for classes and modules.
+- Follow Rails naming conventions for models, controllers, and routes.
+
+# Ruby and Rails Usage
+- Use Ruby 3.x features when appropriate.
+- Leverage ActiveRecord and Rails helpers effectively.
+
+# Syntax and Formatting
+- Follow the Ruby Style Guide and StandardRB syntax.
+- Use expressive Ruby syntax (e.g., unless, ||=, &.).
+
+# Error Handling and Validation
+- Use exceptions only for exceptional cases.
+- Implement model validations and consistent error responses.
+- Handle errors gracefully in controllers.
+
+# Performance
+- Add appropriate DB indexes.
+- Avoid N+1 queries (use includes/preload).
+- Optimize queries with joins/select when needed.
+- Use pagination for all list endpoints.
+
+# Security
+- Implement authentication (e.g., Devise).
+- Use strong parameters.
+- Protect against XSS, CSRF, and SQL injection.
+
+# Testing
+- Use RSpec for model, request, and controller tests.
+- Use FactoryBot for test data.
+- Keep tests deterministic and independent.
+
+# Execution & Quality Loop (Backend)
+- Do not stop until all unchecked items in PROMPT_CHECKLIST.md are complete.
+- On startup or restart, reload PROMPT.md and PROMPT_CHECKLIST.md and resume from the first unchecked item.
+- For each unchecked checklist item:
+  - Implement the task.
+  - Run: `bundle exec rubocop`, `bundle exec brakeman -A`, `bundle exec rspec`.
+  - Fix all issues before proceeding.
+  - Mark the checklist item from `[ ]` to `[x]` and append a timestamp.
+  - Commit using Conventional Commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`).
+
+# Dependencies (Determinism)
+- Use only declared gems required by the prompt.
+- Do not add or upgrade gems unless strictly necessary for a checklist item.
+- After modifying Gemfile, run `bundle install` and commit the lockfile.
+
+# Atomic Commits
+- Make one commit per checklist item where feasible.
+- Keep commit scope aligned with the task.
+
+# Completion Criteria (Backend)
+- All checklist items `[x]`.
+- RuboCop, Brakeman, and RSpec pass.
+- Swagger docs and README are up to date.

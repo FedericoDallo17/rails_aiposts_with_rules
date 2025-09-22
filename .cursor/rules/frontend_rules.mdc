@@ -1,0 +1,50 @@
+---
+description: Frontend rules for AIPosts (React, Vite, or Next.js)
+globs:
+alwaysApply: true
+---
+
+You are an expert in modern frontend development (React, TypeScript, Vite, or Next.js).
+
+# Architecture & Structure
+- Use modular component architecture.
+- Group files by feature (posts, comments, auth, feed, search, notifications).
+- Reusable components under `/components`.
+- API logic under `/services` or `/api`.
+- Pages/routes under `/pages` or `/views`.
+
+# Code Style & Conventions
+- Use ES2020+ and functional components with Hooks.
+- Descriptive component and prop names.
+- Keep JSX clean; avoid heavy inline logic.
+- Use ESLint + Prettier.
+
+# State & Data
+- Prefer local state; use Context/Zustand/Redux Toolkit only when justified.
+- Use async/await for API calls with robust error handling.
+- Show loading, error, and empty states consistently.
+
+# UI & Accessibility
+- Use Tailwind, CSS modules, or styled-components.
+- Ensure keyboard navigation and aria labels.
+- Provide alt text for all images.
+
+# Testing
+- Use Jest or Vitest for unit/integration tests.
+- Test at least one full flow (login → create post → comment → like).
+
+# API Integration
+- Consume all backend endpoints listed in PROMPT.md.
+- Implement login, logout, and token handling.
+- Handle 401/403 (redirect or refresh).
+- Support pagination, sorting, filtering as available.
+
+# Build & Deployment
+- App must build cleanly (`npm run build`).
+- Include `.env.example` (API_BASE_URL, etc.).
+- Document build and run steps in README.
+
+# Execution Flow (Frontend)
+- Do not stop until all frontend tasks in PROMPT_CHECKLIST.md are complete.
+- After each feature: run `npm run lint` and `npm test`, fix issues, and commit.
+- Stop only when all checklist items are `[x]` and the build passes without warnings.

@@ -1,0 +1,64 @@
+---
+description: Ruleset test for AIPosts
+globs:
+alwaysApply: true
+---
+
+You are an expert in Ruby on Rails and PostgreSQL.
+
+Code Style and Structure
+- Write concise, idiomatic Ruby code with accurate examples.
+- Follow Rails conventions and best practices.
+- Use object-oriented and functional programming patterns as appropriate.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable and method names (e.g., user_signed_in?, calculate_total).
+- Structure files according to Rails conventions (MVC, concerns, helpers, etc.).
+
+Naming Conventions
+- Use snake_case for file names, method names, and variables.
+- Use PascalCase for class and module names.
+- Follow Rails naming conventions for models, controllers, and views.
+
+Ruby and Rails Usage
+- Use Ruby 3.x features when appropriate (e.g., pattern matching, endless methods).
+- Leverage Rails' built-in helpers and methods.
+- Use ActiveRecord effectively for database operations.
+
+Syntax and Formatting
+- Follow the Ruby Style Guide (https://rubystyle.guide/).
+- Follow Standardrb syntax (https://github.com/standardrb/standard).
+- Use Ruby's expressive syntax (e.g., unless, ||=, &.).
+
+Error Handling and Validation
+- Use exceptions for exceptional cases, not for control flow.
+- Implement proper error logging and user-friendly messages.
+- Use ActiveModel validations in models.
+- Handle errors gracefully in controllers and display appropriate flash messages.
+- Prefer having modularized error handling over repetitive in-controller error handling.
+
+Performance Optimization
+- Use database indexing effectively.
+- Implement caching strategies (fragment caching, Russian Doll caching).
+- Use eager loading (when needed) to avoid N+1 queries.
+- Optimize database queries using includes, joins, or select.
+
+Key Conventions
+- Follow RESTful routing conventions.
+- Use concerns for shared behavior across models or controllers.
+- Implement service objects for complex business logic.
+- Use background jobs (e.g., Sidekiq) for time-consuming tasks.
+- Use JBuilder to define model views.
+
+Testing
+- Write comprehensive tests using RSpec.
+- Follow TDD/BDD practices.
+- Use factories (FactoryBot) for test data generation.
+- Use Swagger to document endpoints.
+- Make sure tests run and pass on their entirety.
+
+Security
+- Implement proper authentication and authorization (e.g., Devise, Pundit).
+- Use strong parameters in controllers.
+- Protect against common web vulnerabilities (XSS, CSRF, SQL injection).
+
+Follow the official Ruby on Rails guides for best practices in routing, controllers, models, views, and other Rails components.

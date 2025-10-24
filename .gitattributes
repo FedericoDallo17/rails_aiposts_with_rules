@@ -1,0 +1,28 @@
+* text=auto eol=lf
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg binary
+
+# Fonts
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+*.bz2 binary
+*.7z binary
+*.rar binary
+

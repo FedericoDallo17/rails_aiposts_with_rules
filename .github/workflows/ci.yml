@@ -1,0 +1,139 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  backend-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4.4
+        bundler-cache: true
+        working-directory: ./server
+    
+    - name: Run RuboCop
+      run: bundle exec rubocop
+
+  backend-security:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4.4
+        bundler-cache: true
+        working-directory: ./server
+    
+    - name: Run Brakeman
+      run: bundle exec brakeman -q
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aiposts_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    env:
+      RAILS_ENV: test
+      DATABASE_HOST: localhost
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: aiposts_test
+      REDIS_URL: redis://localhost:6379/0
+      DEVISE_JWT_SECRET_KEY: test_secret_key
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4.4
+        bundler-cache: true
+        working-directory: ./server
+    
+    - name: Install PostgreSQL client
+      run: sudo apt-get install -y postgresql-client
+    
+    - name: Setup Database
+      run: |
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+    
+    - name: Run RSpec
+      run: COVERAGE=true bundle exec rspec
+    
+    - name: Upload Coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: server/coverage/
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: web/package-lock.json
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build
+      run: npm run build
+      env:
+        VITE_API_URL: http://localhost:3000
+        VITE_WS_URL: ws://localhost:3000/cable
+

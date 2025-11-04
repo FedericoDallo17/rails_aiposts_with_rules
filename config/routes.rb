@@ -10,15 +10,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      devise_for :users, path: "", path_names: {
-        sign_in: "login",
-        sign_out: "logout",
-        registration: "signup"
-      }, controllers: {
+      devise_for :users, controllers: {
         registrations: "api/v1/registrations",
         sessions: "api/v1/sessions",
         passwords: "api/v1/passwords"
-      }, defaults: { format: :json }
+      }
 
       # User routes
       resources :users, only: [ :show, :update, :destroy ] do

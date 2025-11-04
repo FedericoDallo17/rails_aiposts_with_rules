@@ -1,24 +1,40 @@
 module Api
   module V1
     class SessionsController < Devise::SessionsController
-      skip_before_action :verify_authenticity_token, raise: false
       respond_to :json
 
       def create
         self.resource = warden.authenticate!(auth_options)
         sign_in(resource_name, resource)
+        yield resource if block_given?
+        respond_with resource, location: after_sign_in_path_for(resource)
+      rescue StandardError
+        render json: {
+          error: "Invalid email or password"
+        }, status: :unauthorized
+      end
+
+      private
+
+      def respond_with(resource, _opts = {})
         render json: {
           status: { code: 200, message: "Logged in successfully." },
           data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-        }, status: :ok, content_type: "application/json"
+        }, status: :ok
       end
 
-      def destroy
-        signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
-        render json: {
-          status: 200,
-          message: "Logged out successfully."
-        }, status: :ok, content_type: "application/json"
+      def respond_to_on_destroy
+        if current_user
+          render json: {
+            status: 200,
+            message: "Logged out successfully."
+          }, status: :ok
+        else
+          render json: {
+            status: 401,
+            message: "Couldn't find an active session."
+          }, status: :unauthorized
+        end
       end
     end
   end

@@ -10,7 +10,7 @@ module Api
         render json: {
           status: { code: 200, message: "Logged in successfully." },
           data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-        }, status: :ok
+        }, status: :ok, content_type: "application/json"
       end
 
       def destroy
@@ -18,7 +18,7 @@ module Api
         render json: {
           status: 200,
           message: "Logged out successfully."
-        }, status: :ok
+        }, status: :ok, content_type: "application/json"
       end
     end
   end

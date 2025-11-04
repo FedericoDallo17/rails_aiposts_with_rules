@@ -2,6 +2,7 @@ module Api
   module V1
     class RegistrationsController < Devise::RegistrationsController
       skip_before_action :verify_authenticity_token, raise: false
+      before_action :configure_sign_up_params, only: [ :create ]
       respond_to :json
 
       def create
@@ -13,16 +14,20 @@ module Api
           render json: {
             status: { code: 200, message: "Signed up successfully." },
             data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-          }, status: :ok
+          }, status: :ok, content_type: "application/json"
         else
           clean_up_passwords resource
           render json: {
             status: { message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}" }
-          }, status: :unprocessable_entity
+          }, status: :unprocessable_entity, content_type: "application/json"
         end
       end
 
       private
+
+      def configure_sign_up_params
+        devise_parameter_sanitizer.permit(:sign_up, keys: [ :username, :first_name, :last_name, :bio, :website, :location ])
+      end
 
       def sign_up_params
         params.require(:user).permit(:email, :password, :password_confirmation, :username, :first_name, :last_name, :bio, :website, :location)

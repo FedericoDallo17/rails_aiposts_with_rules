@@ -3,16 +3,14 @@ module Api
     class SessionsController < Devise::SessionsController
       respond_to :json
 
-      before_action :configure_sign_in_params, only: [ :create ]
-
       def create
-        self.resource = warden.authenticate(auth_options)
+        user = User.find_by(email: params[:user][:email])
 
-        if resource
-          sign_in(resource_name, resource)
+        if user&.valid_password?(params[:user][:password])
+          sign_in(user)
           render json: {
             status: { code: 200, message: "Logged in successfully." },
-            data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
+            data: UserSerializer.new(user).serializable_hash[:data][:attributes]
           }, status: :ok
         else
           render json: {
@@ -37,10 +35,6 @@ module Api
       end
 
       private
-
-      def configure_sign_in_params
-        devise_parameter_sanitizer.permit(:sign_in, keys: [ :email, :password ])
-      end
 
       def respond_with(resource, _opts = {})
         render json: {

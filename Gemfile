@@ -61,6 +61,6 @@ group :development, :test do
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails"
   gem "faker"
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 7.0"
   gem "rswag-specs"
 end
